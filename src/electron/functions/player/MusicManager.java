@@ -83,6 +83,11 @@ public class MusicManager {
 		return result;
 	}
 
+	public static List<Thread> getPlayers() {
+		threads = checkAliveThreads(threads);
+		return threads;
+	}
+
 	/**
 	 * Removes dead threads from List<Thread>
 	 * 

