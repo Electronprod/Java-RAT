@@ -51,7 +51,8 @@ public class Chat {
 	}
 
 	public static String hide() {
-		frame.setVisible(false);
+		frame.dispose();
+		isCreated = false;
 		return "[CHAT]: hidden.";
 	}
 

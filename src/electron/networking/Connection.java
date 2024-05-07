@@ -32,7 +32,6 @@ public class Connection extends Thread {
 	private static Socket server;
 	private ClientInfoSender cldata = new ClientInfoSender();
 	private ScreenSender screenSender = new ScreenSender();
-	private ScreenV2Sender ssender = new ScreenV2Sender();
 	public static Robot r;
 
 	public Connection(List<String> servers) {
@@ -78,28 +77,23 @@ public class Connection extends Thread {
 					cldata.start();
 					screenSender = new ScreenSender();
 					screenSender.start();
-					ssender = new ScreenV2Sender(r, ip + ":" + port);
-					ssender.start();
 					startReceiving();
 				} catch (UnknownHostException e) {
 					logger.log("[networking.Connect]: not connected: " + e.getMessage());
 					connected = false;
 					cldata.interrupt();
 					screenSender.interrupt();
-					ssender.interrupt();
 					Thread.sleep(timeout);
 				} catch (IOException e) {
 					logger.log("[networking.Connect]: not connected: " + e.getMessage());
 					connected = false;
 					cldata.interrupt();
 					screenSender.interrupt();
-					ssender.interrupt();
 					Thread.sleep(timeout);
 				}
 			} catch (InterruptedException e) {
 				logger.error("[networking.Connect]: thread interrupted.");
 				cldata.interrupt();
-				ssender.interrupt();
 				screenSender.interrupt();
 				connected = false;
 			}
