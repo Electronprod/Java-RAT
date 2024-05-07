@@ -7,9 +7,6 @@ public class ExplorerPacketInput {
 
 	public ExplorerPacketInput(JSONObject main) {
 		this.main = main;
-//		main.put("command", command);
-//		main.put("path", path);
-//		main.put("packettype", "1");
 	}
 
 	public String getCommand() {

@@ -22,7 +22,7 @@ public class Downloader {
 		}
 	}
 
-	public static void downloadUsingNIO(String urlStr, String file) throws IOException {
+	private static void downloadUsingNIO(String urlStr, String file) throws IOException {
 		URL url = new URL(urlStr);
 		ReadableByteChannel rbc = Channels.newChannel(url.openStream());
 		FileOutputStream fos = new FileOutputStream(file);
@@ -31,7 +31,7 @@ public class Downloader {
 		rbc.close();
 	}
 
-	public static void downloadUsingStream(String urlStr, String file) throws IOException {
+	private static void downloadUsingStream(String urlStr, String file) throws IOException {
 		URL url = new URL(urlStr);
 		BufferedInputStream bis = new BufferedInputStream(url.openStream());
 		FileOutputStream fis = new FileOutputStream(file);

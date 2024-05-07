@@ -53,6 +53,7 @@ public class ProcessSender extends Thread {
 			Connection.send(packet.generate().toJSONString());
 			logger.log("[networking.ProcessSender]: sent TaskManager. (" + logger.getTime() + ")");
 		} else {
+			// !!!Deprecated
 			// If other systems (Linux)
 			String input = cmd.executeWhileProcAlive(
 					"ps -e -o pid,user,%cpu,%mem,cmd,state,command --no-headers | awk '{print $1\"(splitter)\",\"(splitter)\"$2,\"(splitter)\"$3,\"(splitter)\"$4,\"(splitter)\"$5,\"(splitter)\"$6,\"(splitter)\"$7 \"(end)\"}'");

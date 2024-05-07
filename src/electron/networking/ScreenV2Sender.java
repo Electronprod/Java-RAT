@@ -15,6 +15,9 @@ import javax.imageio.ImageIO;
 import electron.console.logger;
 import electron.networking.packets.ErrorPacket;
 
+/**
+ * Deprecated. Unsupported.
+ */
 public class ScreenV2Sender extends Thread {
 	private Robot robot;
 	private static boolean isEnabled = false;
@@ -35,7 +38,7 @@ public class ScreenV2Sender extends Thread {
 		this.ip = address1[0];
 		this.port = Integer.parseInt(address1[1]) + 2;
 	}
-
+	public ScreenV2Sender() {}
 	public void run() {
 		while (true) {
 			if (!isEnabled) {

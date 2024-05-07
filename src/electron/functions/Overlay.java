@@ -28,26 +28,21 @@ public class Overlay {
 		isCreated = true;
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice gd = ge.getDefaultScreenDevice();
-		// Создаем окно на весь экран
 		frame = new JFrame(gd.getDefaultConfiguration());
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.setBackground(Color.BLACK);
-		// Устанавливаем окно на весь экран
 		gd.setFullScreenWindow(frame);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenWidth = (int) screenSize.getWidth();
 		int screenHeight = (int) screenSize.getHeight();
-		// Проверяем, поддерживает ли экран режим отображения с определенным разрешением
-		// и глубиной цвета
 		DisplayMode dm = new DisplayMode(screenWidth, screenHeight, 32, DisplayMode.REFRESH_RATE_UNKNOWN);
 		if (gd.isDisplayChangeSupported()) {
 			gd.setDisplayMode(dm);
 		}
-		// Задаем размер окна на весь экран
 		Dimension screenSize1 = frame.getSize();
 		frame.setSize(screenSize1);
-		// Отображаем окно
+		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 	}
 

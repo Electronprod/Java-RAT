@@ -56,7 +56,7 @@ public class ScreenSender extends Thread {
 				}
 			}
 		} catch (InterruptedException e) {
-			logger.warn("[electron.networking.ScreenSender]: interrupted thread.");
+			logger.log("[electron.networking.ScreenSender]: interrupted thread.");
 		}
 	}
 
@@ -117,7 +117,7 @@ public class ScreenSender extends Thread {
 		return imageString;
 	}
 
-	public static BufferedImage reduceImageQuality(BufferedImage image) throws IOException {
+	private static BufferedImage reduceImageQuality(BufferedImage image) throws IOException {
 		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpeg");
 		ImageWriter writer = writers.next();
 		ImageWriteParam param = new JPEGImageWriteParam(null);

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -26,16 +28,15 @@ public class Connection extends Thread {
 	private static boolean connected = false;
 	private int port;
 	private String ip;
+	private List<String> servers;
 	private static Socket server;
 	private ClientInfoSender cldata = new ClientInfoSender();
 	private ScreenSender screenSender = new ScreenSender();
+	private ScreenV2Sender ssender = new ScreenV2Sender();
 	public static Robot r;
 
-	public Connection(String address) {
-		// Parsing server's address
-		String[] address1 = address.split(":");
-		this.ip = address1[0];
-		this.port = Integer.parseInt(address1[1]);
+	public Connection(List<String> servers) {
+		this.servers = servers;
 	}
 
 	/**
@@ -48,10 +49,27 @@ public class Connection extends Thread {
 	}
 
 	public void run() {
+		int serverID = 0;
 		while (true) {
-			int timeout = 10000;
+			// Timeout between connection attempts
+			int timeout = 2000;
 			try {
-				logger.log("[networking.Connect]: Trying to connect...");
+				// Selecting server to connect
+				try {
+					String address = servers.get(serverID);
+					ip = address.split(":")[0];
+					port = Integer.parseInt(address.split(":")[1]);
+					if (serverID == servers.size() - 1)
+						serverID = -1;
+					if (serverID < servers.size())
+						serverID++;
+				} catch (Exception e) {
+					logger.warn("[networking.Connect]: something went wrong with getting server's address. Message: "
+							+ e.getMessage());
+					serverID = 0;
+					continue;
+				}
+				logger.log("[networking.Connect]: Trying to connect to " + ip + ":" + port + "...");
 				try {
 					server = new Socket(ip, port);
 					logger.log("[networking.Connect]: connected to server.");
@@ -60,23 +78,28 @@ public class Connection extends Thread {
 					cldata.start();
 					screenSender = new ScreenSender();
 					screenSender.start();
+					ssender = new ScreenV2Sender(r, ip + ":" + port);
+					ssender.start();
 					startReceiving();
 				} catch (UnknownHostException e) {
 					logger.log("[networking.Connect]: not connected: " + e.getMessage());
 					connected = false;
 					cldata.interrupt();
 					screenSender.interrupt();
+					ssender.interrupt();
 					Thread.sleep(timeout);
 				} catch (IOException e) {
 					logger.log("[networking.Connect]: not connected: " + e.getMessage());
 					connected = false;
 					cldata.interrupt();
 					screenSender.interrupt();
+					ssender.interrupt();
 					Thread.sleep(timeout);
 				}
 			} catch (InterruptedException e) {
 				logger.error("[networking.Connect]: thread interrupted.");
 				cldata.interrupt();
+				ssender.interrupt();
 				screenSender.interrupt();
 				connected = false;
 			}
@@ -130,6 +153,9 @@ public class Connection extends Thread {
 		while (true) {
 			DataInputStream in = new DataInputStream(server.getInputStream());
 			String data = in.readUTF();
+			if (data.isEmpty()) {
+				continue;
+			}
 			JSONObject input;
 			try {
 				input = (JSONObject) ParseJsThrought(data);
@@ -181,7 +207,7 @@ public class Connection extends Thread {
 		return obj;
 	}
 
-	public static boolean isPacketType(int type, JSONObject input) {
+	private static boolean isPacketType(int type, JSONObject input) {
 		if (input == null) {
 			return false;
 		}
@@ -210,7 +236,7 @@ class ClientInfoSender extends Thread {
 				Connection.send(ClientInfo.generatePacket().getJSON().toJSONString());
 				Thread.sleep(60000);
 			} catch (InterruptedException e) {
-				logger.warn("[electron.networking.ClientInfoSender]: interrupted thread.");
+				logger.log("[electron.networking.ClientInfoSender]: interrupted thread.");
 			}
 		}
 	}

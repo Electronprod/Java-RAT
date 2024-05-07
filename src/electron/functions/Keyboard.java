@@ -97,6 +97,8 @@ public class Keyboard {
 				return KeyEvent.VK_F12;
 			} else if (input.equals("capslock")) {
 				return KeyEvent.VK_CAPS_LOCK;
+			} else if (input.equals("scrllk")) {
+				return KeyEvent.VK_SCROLL_LOCK;
 			} else if (input.equals("ctrl")) {
 				return KeyEvent.CTRL_DOWN_MASK;
 			} else {

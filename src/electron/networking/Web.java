@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class API {
+public class Web {
 
 	/**
 	 * Get data from URI

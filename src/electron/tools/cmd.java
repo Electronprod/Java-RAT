@@ -9,7 +9,7 @@ import electron.networking.Connection;
 import electron.networking.packets.OutputMessagePacket;
 
 public class cmd {
-	public static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+	public static boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
 
 	public static boolean execute(String data, boolean directCommand) {
 		try {
