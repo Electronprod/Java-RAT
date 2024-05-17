@@ -1,6 +1,9 @@
 package electron.functions;
 
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.Robot;
+import java.awt.Toolkit;
 import java.util.concurrent.locks.LockSupport;
 
 public class MouseTweaks {
@@ -21,6 +24,15 @@ public class MouseTweaks {
 		r.mouseRelease(btn);
 	}
 
+	public static void setMouse(double x, double y, double maxX, double maxY) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenWidth = screenSize.width;
+		int screenHeight = screenSize.height;
+		x = map(x, 0, maxX, 0, screenWidth);
+		y = map(y, 0, maxY, 0, screenHeight);
+		setMouse((int) Math.round(x), (int) Math.round(y));
+	}
+
 	/**
 	 * Toggle mouse fixer state
 	 * 
@@ -36,6 +48,10 @@ public class MouseTweaks {
 			mousefixer.stop();
 			return "[MOUSE_FIXER]: fixer disabled.";
 		}
+	}
+
+	private static double map(double value, double fromLow, double fromHigh, double toLow, double toHigh) {
+		return Math.round((value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow);
 	}
 }
 

@@ -12,6 +12,7 @@ import electron.console.logger;
 import electron.functions.Chat;
 import electron.functions.Keyboard;
 import electron.functions.MessageBoxTweaks;
+import electron.functions.MouseTweaks;
 import electron.functions.Overlay;
 import electron.networking.packets.ErrorPacket;
 import electron.networking.packets.ExplorerPacketInput;
@@ -43,6 +44,17 @@ public class CommandExecutor {
 			}
 			if (command.equalsIgnoreCase("/tasklistfast")) {
 				new ProcessSender(true).start();
+				return;
+			}
+			// /setmouse <x> <y> <xb> <yb>
+			if (isMultiCommand("/setmouse", command)) {
+				try {
+					String[] args = getCommandArgs(command);
+					MouseTweaks.setMouse(Double.parseDouble(args[1]), Double.parseDouble(args[2]),
+							Double.parseDouble(args[3]), Double.parseDouble(args[4]));
+				} catch (Exception e) {
+					logger.error("Error setting mouse: " + e.getMessage());
+				}
 				return;
 			}
 			if (command.contains("/edit=")) {
