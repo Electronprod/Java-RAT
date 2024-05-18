@@ -11,7 +11,7 @@ import electron.console.logger;
 import electron.networking.Web;
 import electron.tools.FileOptions;
 
-public class ClientInfo {
+public class ClientInfo{
 	private String os = "-";
 	private String net_address = "-";
 	private String username = "-";

@@ -51,7 +51,8 @@ public class ProcessSender extends Thread {
 				}
 			}
 			Connection.send(packet.generate().toJSONString());
-			logger.log("[networking.ProcessSender]: sent TaskManager. (" + logger.getTime() + ")");
+			// logger.log("[networking.ProcessSender]: sent TaskManager. (" +
+			// logger.getTime() + ")");
 		} else {
 			// !!!Deprecated
 			// If other systems (Linux)
