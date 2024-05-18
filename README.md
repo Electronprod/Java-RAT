@@ -13,8 +13,8 @@ Java version must be higher than 8.
 
 ## Use this without Java installed
 This app supports GraalVM native-image compilation. You can do it yourself.\
-**NOTE:** This reduces functionality a little. (.wav player for example)
-**GUIDE:**\
+**NOTE:** This reduces functionality a little. (.wav player for example)\
+**GUIDE:**
 1. Download and install native-image from [this site](https://bell-sw.com/pages/downloads/native-image-kit/). (Only this native-image fork supports AWT)
 2. Install and configure dependencies using [this guide](https://www.graalvm.org/latest/docs/getting-started/windows/).
 3. Open a terminal in the folder where you downloaded Client.jar file and execute there this command:
