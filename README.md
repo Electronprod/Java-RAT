@@ -33,17 +33,17 @@ This app supports GraalVM native-image compilation. You can do it yourself.\
 ### File Manager
 >- Download file
 >- Upload file
->- Edit file (any files with plain text and small long)
+>- Edit text file
 >- Run file
 >- Run file and listen output
 >- Create file
 >- Delete File
->- Play .wav file with internal music player (native-image unsupports this function)
+>- Play .wav file with internal music player
 ### TaskManager
 Works only on Windows.
 >- Kill process by PID
 >- Kill process by Name
->- Get full process info (takes a lot of time, by default disabled. Enable with "fastmode" ChoiceBox)
+>- Get full process info
 ### Scripting
 Works only on Windows. You can execute your script.\
 **Supported languages:**
@@ -56,3 +56,8 @@ Works only on Windows. You can execute your script.\
 
 ### Console
 You can run any system command in the console. You can execute built-in application commands. To view them, use the "/help" command.
+
+### Fun
+>- Make the screen white
+>- Send message box
+>- Chat with user
